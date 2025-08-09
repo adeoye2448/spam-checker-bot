@@ -30,19 +30,19 @@ bot.on("message", async (msg) => {
                 });
             }
 
-            // Step 3: Check the link using API
+            // Step 3: Check the link using IPQS API
             try {
-                const res = await axios.get(`https://api.phishcheck.me/?url=${encodeURIComponent(link)}`);
+                const res = await axios.get(`https://ipqualityscore.com/api/json/url/${process.env.IPQS_KEY}/${encodeURIComponent(link)}`);
 
                 // Step 4: Show result
-                if (res.data.risk_score > 50 || res.data.suspicious) {
+                if (res.data && (res.data.risk_score > 50 || res.data.suspicious)) {
                     await bot.editMessageText(`⚠ *Malicious Link Detected!* \n${link}`, {
                         chat_id: chatId,
                         message_id: scanningMsg.message_id,
                         parse_mode: "Markdown",
                         reply_markup: {
                             inline_keyboard: [
-                                [{ text: "🔎 View Report", url: `https://www.virustotal.com/gui/url/${encodeURIComponent(link)}` }],
+                                [{ text: "🔎 View Report", url: `https://www.ipqualityscore.com/free-url-scanner?url=${encodeURIComponent(link)}` }],
                                 [{ text: "🚫 Ignore", callback_data: "ignore" }]
                             ]
                         }
