@@ -71,7 +71,7 @@ Your link has been removed from *${msg.chat.title}* because it was flagged as ma
                 }
             );
         } else {
-            await bot.editMessageText(`✅ *Safe Link*  
+            await bot.editMessageText(`✅ *Safe Link*
 ${link}`, {
                 chat_id: chatId,
                 message_id: scanningMsg.message_id,
@@ -85,7 +85,10 @@ ${link}`, {
         }
 
     } catch (error) {
-        console.error("Error checking link:", error.message);
+        if (!process.env.IPQS_API_KEY || !process.env.TELEGRAM_BOT_TOKEN) {
+    console.error("❌ Missing required environment variables. Check your .env file.");
+}
+
         await bot.sendMessage(chatId, "❌ Error scanning the link.");
     }
 }
